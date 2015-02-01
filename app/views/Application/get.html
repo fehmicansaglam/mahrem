@@ -1,0 +1,13 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+<form action="@{decrypt('uuid':params.uuid)}" method="post">
+	<div class="input-field">
+		<i class="mdi-hardware-security prefix"></i>
+		<input id="password" type="text" name="password" required class="validate"/>
+		<label for="password">Parola:</label>
+	</div>
+	<button class="btn waves-effect waves-light" type="submit" name="action">İndir
+		<i class="mdi-file-cloud-download right"></i>
+	</button>
+</form>

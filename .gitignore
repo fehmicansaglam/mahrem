@@ -1,0 +1,26 @@
+.*
+!.gitignore
+
+public/uploads
+lib/*
+!public/lib
+precompiled/
+modules/
+db/
+tmp/
+test-result/
+logs/
+*.log
+dump.rdb
+
+# idea specific
+*.iml
+*.ipr
+*.iws
+
+# eclipse specific
+eclipse/
+
+# sublime text
+*.sublime-*
+

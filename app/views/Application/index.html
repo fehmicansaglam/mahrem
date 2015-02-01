@@ -1,0 +1,43 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+<div class="row">
+	<form class="cols s12" action="@{save}" method="post" enctype="multipart/form-data">
+		<div class="row">
+			<div class="input-field col s6">
+				<i class="mdi-hardware-security prefix"></i>
+				<input id="password" type="text" name="password" required class="validate"/>
+				<label for="password">Parola:</label>
+			</div>
+			<div class="input-field col s6">
+				<i class="mdi-editor-attach-file prefix"></i>
+				<input id="file" type="file" name="file" required class="validate"/>
+			</div>
+			<div class="col s12">
+				<button class="btn waves-effect waves-light" type="submit" name="action">Kaydet
+					<i class="mdi-content-send right"></i>
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+
+<table class="bordered hoverable">
+	<tr>
+		<th>Dosya</th>
+		<th>Boyut</th>
+		<th>Tuz</th>
+		<th>HMAC</th>
+		<th></th>
+	</tr>
+	#{list files}
+	<tr>
+		<td>${_.name}</td>
+		<td>${_.size?.formatSize()}</td>
+		<td>${_.salt}</td>
+		<td>${_.hmac}</td>
+		<td><a href="@{get(_.uuid)}">İndir</a></td>
+	</tr>
+	#{/list}
+</table>
