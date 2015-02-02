@@ -2,11 +2,11 @@
 #{set title:'Home' /}
 
 <div class="row">
-	<form class="cols s12" action="@{save}" method="post" enctype="multipart/form-data">
+	<form class="cols s12" action="@{save}" method="post" enctype="multipart/form-data" autocomplete="off">
 		<div class="row">
 			<div class="input-field col s6">
 				<i class="mdi-hardware-security prefix"></i>
-				<input id="password" type="text" name="password" required class="validate"/>
+				<input id="password" type="password" name="password" required class="validate"/>
 				<label for="password">Parola:</label>
 			</div>
 			<div class="input-field col s6">
