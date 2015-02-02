@@ -26,6 +26,7 @@ public class Application extends Controller {
     }
 
     public static void get(String uuid) {
+        notFoundIfNull(uuid);
         render();
     }
 
@@ -38,7 +39,7 @@ public class Application extends Controller {
 
         response.setContentTypeIfNotSet(MimeTypes.getContentType(encryptedFile.name));
         final String hmac = CryptoUtils.decrypt(password, encryptedFile.salt, "public/uploads/" + uuid, response.out);
-        if(!hmac.equals(encryptedFile.hmac)){
+        if (!hmac.equals(encryptedFile.hmac)) {
             error("hmac");
         }
     }

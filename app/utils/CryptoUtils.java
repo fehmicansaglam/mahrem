@@ -14,6 +14,7 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.spec.KeySpec;
+import java.util.Arrays;
 
 public abstract class CryptoUtils {
 
@@ -46,15 +47,18 @@ public abstract class CryptoUtils {
                                  final String salt,
                                  final File infile,
                                  final String outfile) throws Exception {
-        final byte[] key = CryptoUtils.deriveKey(password, salt, 128);
-        Logger.info("key: %s", Codec.byteToHexString(key));
+        final byte[] key = CryptoUtils.deriveKey(password, salt, 256);
+        final byte[] key1 = Arrays.copyOfRange(key, 0, key.length / 2);
+        final byte[] key2 = Arrays.copyOfRange(key, key.length / 2, key.length);
+        Logger.info("key1: %s", Codec.byteToHexString(key1));
+        Logger.info("key2: %s", Codec.byteToHexString(key2));
 
-        SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
+        SecretKeySpec skeySpec = new SecretKeySpec(key1, "AES");
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5padding");
         cipher.init(Cipher.ENCRYPT_MODE, skeySpec, new IvParameterSpec(new byte[16]));
 
         byte buffer[] = new byte[4096];
-        Hmac hmac = Hmac.init(key);
+        Hmac hmac = Hmac.init(key2);
         try (InputStream is = new FileInputStream(infile);
              OutputStream os = new FileOutputStream(outfile)) {
             int len;
@@ -75,15 +79,18 @@ public abstract class CryptoUtils {
                                  final String salt,
                                  final String infile,
                                  final OutputStream os) throws Exception {
-        final byte[] key = CryptoUtils.deriveKey(password, salt, 128);
-        Logger.info("key: %s", Codec.byteToHexString(key));
+        final byte[] key = CryptoUtils.deriveKey(password, salt, 256);
+        final byte[] key1 = Arrays.copyOfRange(key, 0, key.length / 2);
+        final byte[] key2 = Arrays.copyOfRange(key, key.length / 2, key.length);
+        Logger.info("key1: %s", Codec.byteToHexString(key1));
+        Logger.info("key2: %s", Codec.byteToHexString(key2));
 
-        SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
+        SecretKeySpec skeySpec = new SecretKeySpec(key1, "AES");
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5padding");
         cipher.init(Cipher.DECRYPT_MODE, skeySpec, new IvParameterSpec(new byte[16]));
 
         byte buffer[] = new byte[4096];
-        Hmac hmac = Hmac.init(key);
+        Hmac hmac = Hmac.init(key2);
         try (InputStream is = new FileInputStream(infile)) {
             int len;
 
